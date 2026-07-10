@@ -1,0 +1,37 @@
+# Virtual Environment
+venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+logs/
+
+# Generated Outputs
+data/processed/
+
+# Raw Datasets
+data/raw/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/settings.json
+
+# Generated datasets
+data/processed/*.csv
+data/processed/*.db
+
+# Large raw datasets
+Job Analytics/
+
+# Optional notebooks cache
+.ipynb_checkpoints/
+
+.git_backup/
