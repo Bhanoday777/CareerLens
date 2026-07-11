@@ -78,6 +78,8 @@ DIM_SKILL_FILE: Path = PROCESSED_DATA_DIR / "dim_skill.csv"
 
 FACT_JOBS_FILE: Path = PROCESSED_DATA_DIR / "fact_jobs.csv"
 
+BRIDGE_JOB_SKILL_FILE: Path = PROCESSED_DATA_DIR / "bridge_job_skill.csv"
+
 # ==========================================================
 # Reports
 # ==========================================================

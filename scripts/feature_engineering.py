@@ -54,7 +54,9 @@ def create_remote_classification(df):
 
     def classify(row):
 
-        if row["remote_allowed"] is True:
+        remote = str(row["remote_allowed"]).strip().lower()
+
+        if remote in ["1", "1.0", "true", "yes"]:
             return "Remote"
 
         work_type = str(row["work_type"]).lower()
@@ -112,9 +114,9 @@ def create_job_age(df):
     Calculate age of job posting in days.
     """
 
-    today = pd.Timestamp.now()
+    reference_date = df["posting_time"].max()
 
-    df["job_age_days"] = (today - df["posting_time"]).dt.days
+    df["job_age_days"] = (reference_date - df["posting_time"]).dt.days
 
     return df
 

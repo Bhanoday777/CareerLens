@@ -32,6 +32,7 @@ from config import (
     DIM_INDUSTRY_FILE,
     DIM_SKILL_FILE,
     FACT_JOBS_FILE,
+    BRIDGE_JOB_SKILL_FILE,
 )
 
 from logger import get_logger
@@ -185,6 +186,58 @@ class PowerBIExporter:
         )
 
         return dimension
+    
+    
+    # ==========================================================
+# BRIDGE JOB SKILL
+# ==========================================================
+
+    def create_bridge_job_skill(
+        self,
+        skill_dim: pd.DataFrame,
+    ) -> pd.DataFrame:
+        """
+        Create bridge table between jobs and skills.
+        """
+
+        skill_lookup = dict(
+        zip(
+            skill_dim["skill"],
+            skill_dim["skill_id"],
+        )
+        )
+
+        records = []
+
+        for _, row in self.df.iterrows():
+
+            job_id = row["job_id"]
+
+            skills = str(
+                row["skills"]
+            ).split(",")
+
+            for skill in skills:
+
+                skill = skill.strip()
+
+                if skill == "" or skill.lower() == "nan":
+                    continue
+
+                records.append(
+                    {
+                    "job_id": job_id,
+                    "skill_id": skill_lookup[skill],
+                    }
+            )
+
+        bridge = (
+            pd.DataFrame(records)
+            .drop_duplicates()
+            .reset_index(drop=True)
+            )
+
+        return bridge
 
     # ==========================================================
     # FACT TABLE
@@ -246,6 +299,8 @@ class PowerBIExporter:
                 "salary_min",
                 "salary_max",
                 "salary_median",
+                "views",
+                "applies",
                 "skill_count",
                 "experience_bucket",
                 "remote_classification",
@@ -298,6 +353,10 @@ class PowerBIExporter:
         industry_dim = self.create_industry_dimension()
 
         skill_dim = self.create_skill_dimension()
+        
+        bridge_job_skill = self.create_bridge_job_skill(
+        skill_dim
+        )
 
         fact_jobs = self.create_fact_table(
             company_dim,
@@ -327,6 +386,11 @@ class PowerBIExporter:
         save_csv(
             skill_dim,
             DIM_SKILL_FILE,
+        )
+        
+        save_csv(
+            bridge_job_skill,
+            BRIDGE_JOB_SKILL_FILE,
         )
 
         save_csv(
