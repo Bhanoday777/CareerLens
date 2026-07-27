@@ -111,7 +111,7 @@ CareerLens/
 
 ### Executive Overview
 
-![Executive Overview](screenshots/executive_overview.pn)
+![Executive Overview](screenshots/executive_overview.png)
 
 ### Salary Analytics
 
