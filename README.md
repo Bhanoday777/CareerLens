@@ -111,15 +111,15 @@ CareerLens/
 
 ### Executive Overview
 
-![Executive Overview](screenshots/executive_overview.png)
+![Executive Overview](Screenshots/Executive_Overview.png)
 
 ### Salary Analytics
 
-![Salary Analytics](screenshots/salary.png)
+![Salary Analytics](Screenshots/Salary Analytics.png)
 
 ### Hiring Trends
 
-![Hiring Trends](screenshots/trends.png)
+![Hiring Trends](Screenshots/Hiring Trends.png)
 
 
 
