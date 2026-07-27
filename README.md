@@ -115,11 +115,11 @@ CareerLens/
 
 ### Salary Analytics
 
-![Salary Analytics](Screenshots/Salary Analytics.png)
+![Salary Analytics](Screenshots/SalaryAnalytics.png)
 
 ### Hiring Trends
 
-![Hiring Trends](Screenshots/Hiring Trends.png)
+![Hiring Trends](Screenshots/HiringTrends.png)
 
 
 
