@@ -1,218 +1,129 @@
-# CareerLens
+# CareerLens: Job Market Analytics Platform
 
-### AI-Powered Job Market Intelligence Platform
+An end-to-end analytics project on **123,849 LinkedIn job postings**. It covers a Python data pipeline, a SQLite analytics database, an interactive Streamlit dashboard and a Power BI report, all built to answer one question: what does the hiring market actually look like?
 
-Analyze 120,000+ job postings to uncover hiring trends, salary insights, skill demand, and company hiring patterns using **Python, SQL, Streamlit, Plotly, SQLite, and Power BI**.
-
-
-## Overview
-
-CareerLens is an end-to-end Job Market Intelligence Platform built to analyze large-scale job posting data and transform it into actionable business insights.
-
-The project combines data engineering, analytics, business intelligence, and interactive visualization to help recruiters, job seekers, and analysts understand hiring trends across industries.
-
-The platform includes an interactive Streamlit dashboard, Power BI reports, SQL analytics, and a complete Python-based data processing pipeline.
-
-
-## Objectives
-
-- 📊 Analyze hiring trends
-- 💰 Explore salary insights
-- 🏢 Identify top hiring companies
-- 🌍 Analyze job locations
-- 🛠 Discover in-demand skills
-- 📈 Build executive dashboards
-
-
-## Features
-
-### 📊 Dashboard
-
-- Executive Overview
-- Hiring Trends
-- Salary Analytics
-- Interactive KPI Cards
-- Dynamic Charts
-
-### 🔍 Search
-
-- Job Search
-- Company Search
-- Location Filter
-- Experience Filter
-- Remote Jobs Filter
-
-### ⚡ User Experience
-
-- Dark Theme
-- Searchable Dropdowns
-- Interactive Plotly Visualizations
-- Responsive Layout
-
-
-
-## Project Architecture
-
-Raw Job Dataset
-        │
-        ▼
- Data Cleaning
-        │
-        ▼
-Feature Engineering
-        │
-        ▼
- SQLite Database
-        │
- ┌──────┴─────────┐
- ▼                ▼
-Power BI      Streamlit
- Dashboard     Dashboard
-
-
-## Folder Structure
-CareerLens/
-│
-├── assets/
-├── components/
-├── data/
-├── exports/
-├── pages/
-├── powerbi/
-├── reports/
-├── scripts/
-├── sql/
-├── utils/
-├── visualizations/
-│
-├── app.py
-├── requirements.txt
-└── README.md
-
-
-
-
-## Dataset
-
-## Technologies Used
-
-
-| Category           | Technologies        |
-| ------------------ | ------------------- |
-| 🐍 Language        | Python              |
-| 📊 Data Analysis   | Pandas, NumPy       |
-| 📈 Visualization   | Plotly, Matplotlib  |
-| 🖥 Dashboard       | Streamlit, Power BI |
-| 🗄 Database        | SQLite              |
-| 🔧 Version Control | Git, GitHub         |
-
-
-## 📸 Dashboard Preview
-
-### Executive Overview
+![Python](https://img.shields.io/badge/Python-3.12+-3776AB)
+![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B)
+![SQLite](https://img.shields.io/badge/SQLite-Analytics_DB-003B57)
+![Power BI](https://img.shields.io/badge/Power_BI-Report-F2C811)
 
 ![Executive Overview](Screenshots/Executive_Overview.png)
 
-### Salary Analytics
+---
 
-![Salary Analytics](Screenshots/Salary_Analytics.png)
+## What it answers
 
-### Hiring Trends
+- Which industries, companies and locations are hiring the most?
+- How do salaries vary by experience level, industry and remote status?
+- Which skills appear most often in job postings?
+- How has hiring volume changed month to month?
 
-![Hiring Trends](Screenshots/Hiring_Trends.png)
+Written findings are in [`reports/`](reports/). Start with the [executive summary](reports/executive_summary.md) and [business insights](reports/business_insights.md).
 
+## Dashboard
 
+The Streamlit app has six pages:
 
+| Page | What's on it |
+|---|---|
+| Executive Overview | KPI cards and headline hiring metrics |
+| Hiring Trends | Monthly and yearly posting volume, experience-level mix |
+| Salary Analytics | Salary distributions, salary vs. experience and remote status |
+| Job Search | Search and filter postings by company, location, experience and remote work |
+| Dataset Explorer | Browse the cleaned dataset directly |
+| About Project | Methodology and data notes |
 
-## Installation
+<p>
+  <img src="Screenshots/Salary_Analytics.png" width="49%" alt="Salary Analytics" />
+  <img src="Screenshots/Hiring_Trends.png" width="49%" alt="Hiring Trends" />
+</p>
 
-Clone the repository
+A matching Power BI report is in [`powerbi/CareerLens.pbix`](powerbi/CareerLens.pbix).
+
+## Pipeline
+
+```text
+LinkedIn job postings (raw CSVs: postings, skills, industries, salaries)
+        │
+        ▼
+Integration      → join postings with skills, industries and salary tables
+        │
+        ▼
+Cleaning         → deduplicate, handle missing values, normalise salaries
+        │
+        ▼
+Feature eng.     → experience tiers, salary tiers, remote flag, skill counts
+        │
+        ▼
+Validation       → data quality report (reports/data_quality_report.md)
+        │
+        ▼
+SQLite + star-schema CSVs (fact_jobs, dim_company, dim_skill, …)
+        │
+   ┌────┴─────┐
+   ▼          ▼
+Streamlit   Power BI
+```
+
+SQL used for the analysis is in [`sql/analytics_queries.sql`](sql/analytics_queries.sql). Static charts generated by the pipeline are in [`visualizations/`](visualizations/).
+
+## Dataset
+
+The data comes from the **LinkedIn Job Postings (2023–2024)** dataset on [Kaggle](https://www.kaggle.com/datasets/arshkon/linkedin-job-postings). The raw and processed data are not committed because of their size.
+
+To reproduce:
+
+1. Download the dataset and extract it to `data/raw/linkedin_job_postings/`.
+2. Build the master dataset: `python scripts/integrate_datasets.py`
+3. Clean and engineer features (see [`notebooks/01_data_preparation.ipynb`](notebooks/01_data_preparation.ipynb) and the cleaning scripts in [`scripts/`](scripts/)).
+4. Run the analytics phase (SQL analysis, KPIs, Power BI export, reports): `python scripts/run_phase2.py`
+
+## Running the dashboard
 
 ```bash
 git clone https://github.com/Bhanoday777/CareerLens.git
-```
-
-Navigate into the project
-
-```bash
 cd CareerLens
-```
-
-Install dependencies
-
-```bash
+python -m venv venv
+# Windows: venv\Scripts\activate   |   macOS / Linux: source venv/bin/activate
 pip install -r requirements.txt
-```
-
----
-
-# ▶️ Run the Application
-
-```bash
 streamlit run app.py
 ```
 
-The dashboard will open in your browser.
+The dashboard reads from `data/processed/`, so run the pipeline above first.
 
----
+## Tech stack
 
+| Category | Tools |
+|---|---|
+| Language | Python |
+| Data processing | pandas, NumPy |
+| Database | SQLite, SQLAlchemy |
+| Visualisation | Plotly, Altair, Matplotlib |
+| Dashboards | Streamlit, Power BI |
 
-```bash
-streamlit run app.py
+## Project structure
+
+```text
+CareerLens/
+├── app.py              # Streamlit entry point
+├── pages/              # Dashboard pages
+├── components/         # Reusable UI pieces (cards, charts, tables)
+├── utils/              # Data loading, filters, theming
+├── scripts/            # Data pipeline
+├── sql/                # Analytics queries
+├── notebooks/          # Data preparation and analysis notebooks
+├── reports/            # Generated written reports
+├── visualizations/     # Generated static charts
+├── powerbi/            # Power BI report
+└── Screenshots/        # README images
 ```
 
-The dashboard will open in your browser.
+## Roadmap
 
----
-
-## Outputs Generated
-
-✔ Cleaned Dataset
-
-✔ Feature Engineered Dataset
-
-✔ SQLite Analytics Database
-
-✔ Power BI Dashboard
-
-✔ Interactive Streamlit Dashboard
-
-✔ Business Reports
-
-✔ Visual Analytics
-
-
-
-## Future Roadmap
-
-- 🤖 AI Salary Prediction
-- 📄 Resume Matching
-- 💼 Job Recommendation Engine
-- ☁ Cloud Deployment
-- 🧠 Machine Learning Models
-
-
-## 🌟 Key Highlights
-
-- 📊 120,000+ Job Records Analyzed
-- 📈 Interactive Streamlit Dashboard
-- 📉 Executive Power BI Dashboard
-- 💰 Salary Trend Analysis
-- 🏢 Company Hiring Insights
-- 🌍 Geographic Hiring Analysis
-- 🛠 Skill Demand Analytics
-- 🗄 SQL-Based Analytics Pipeline
+- Salary prediction model
+- Resume-to-job matching
+- Cloud deployment of the dashboard
 
 ## Author
 
-## 👨‍💻 Author
-
-**Bhanoday Kurma**
-
-AI Engineer • Software Developer • Data Analytics Enthusiast
-
-GitHub: https://github.com/Bhanoday777
-
----
-
-⭐ If you found this project useful, consider giving it a star on GitHub!
+**Bhanoday Kurma**, [GitHub](https://github.com/Bhanoday777)
